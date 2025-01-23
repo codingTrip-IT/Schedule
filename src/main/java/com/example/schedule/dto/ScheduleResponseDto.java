@@ -1,29 +1,25 @@
-package com.example.schedule.entity;
+package com.example.schedule.dto;
 
+import com.example.schedule.entity.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class Schedule {
+public class ScheduleResponseDto {
 
     private Long id;
     private String todo;
     private String writer;
-    private String password;
-    @Setter
     private LocalDateTime createdAt;
-    @Setter
     private LocalDateTime updatedAt;
 
-    public Schedule(String todo, String writer, String password) {
+    public ScheduleResponseDto(String todo, String writer, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.todo = todo;
         this.writer = writer;
-        this.password = password;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
-
-
 }

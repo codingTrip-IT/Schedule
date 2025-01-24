@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/schedules")
-public class ScheduleController {
+public class ScheduleController{
 
     private final ScheduleService scheduleService;
 

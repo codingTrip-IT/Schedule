@@ -58,21 +58,20 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
     public List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, String writer) {
 
         String sql;
-        String strUpdateAt = updatedAt.toString();
 
         if (updatedAt != null && writer == null){
             sql = "select * from schedule where DATE(updatedAt)= ? order by updatedAt desc";
-            return jdbcTemplate.query(sql,scheduleRowMapper(),strUpdateAt);
+            return jdbcTemplate.query(sql,scheduleRowMapper(),String.valueOf(updatedAt));
         }
 
         if (updatedAt == null && writer != null){
-            sql = "select * from schedule  where  writer=? order by updatedAt desc";
+            sql = "select * from schedule  where  writer = ? order by updatedAt desc";
             return jdbcTemplate.query(sql,scheduleRowMapper(),writer);
         }
 
         if (updatedAt != null && writer != null){
             sql = "select * from schedule where DATE(updatedAt)=? AND writer=? order by updatedAt desc";
-            return jdbcTemplate.query(sql,scheduleRowMapper(),strUpdateAt,writer);
+            return jdbcTemplate.query(sql,scheduleRowMapper(),String.valueOf(updatedAt),writer);
         }
 
         sql = "select * from schedule order by updatedAt desc";

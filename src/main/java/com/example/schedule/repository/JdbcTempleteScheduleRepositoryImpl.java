@@ -55,9 +55,25 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
 
 //    @Override
 //    public List<ScheduleResponseDto> findAllSchedules(Schedule schedule) {
+
+//        String sql = "select * from schedule ";
 //
+//        if (schedule.getUpdatedAt() != null){
+//            sql += "where DATE(updatedAt)=? ";
+//            sql += "order by updatedAt desc";
+//            return jdbcTemplate.query(sql,scheduleRowMapper(),schedule.getUpdatedAt());
+//        }
 //
-//
+//        if (schedule.getWriter() != null){
+//            sql += "writer=?";
+//            sql += "order by updatedAt desc";
+//            return jdbcTemplate.query(sql,scheduleRowMapper(),schedule.getWriter());
+//        }
+
+//        sql += "order by updatedAt desc";
+
+
+
 //        return jdbcTemplate.query(sql,scheduleRowMapper());
 //    }
 
@@ -83,5 +99,11 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
                 );
             }
         };
+    }
+
+    @Override
+    public int updateSchedule(Long id, String todo, String writer, String password) {
+        return jdbcTemplate.update("UPDATE schedule SET todo = ?, writer = ?, updatedAt = NOW()" +
+                "WHERE id = ? AND password = ?;",todo, writer, id, password);
     }
 }

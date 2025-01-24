@@ -9,9 +9,10 @@ public interface ScheduleRepository {
 
     ScheduleResponseDto saveSchedule(Schedule schedule);
 
-    List<ScheduleResponseDto> findAllSchedules(Schedule schedule);
+//    List<ScheduleResponseDto> findAllSchedules(Schedule schedule);
 
     Schedule findMemoByIdOrElseThrow(Long id);
 
 
+    int updateSchedule(Long id, String todo, String writer, String password);
 }

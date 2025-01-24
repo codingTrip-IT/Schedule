@@ -33,20 +33,27 @@ public class ScheduleController {
 //        return ResponseEntity.ok(scheduleService.saveSchedule(dto));
     }
 
-    @GetMapping
-    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule(
-            LocalDateTime updatedAt,
-            String writer
-    ) {
-        log.info("updatedAt={}", updatedAt);
-        log.info("writer={}", writer);
-
-        return ResponseEntity.ok(scheduleService.findAllSchedules(updatedAt,writer));
-    }
+//    @GetMapping
+//    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule(
+//            LocalDateTime updatedAt,
+//            String writer
+//    ) {
+//        log.info("updatedAt={}", updatedAt);
+//        log.info("writer={}", writer);
+//
+//        return ResponseEntity.ok(scheduleService.findAllSchedules(updatedAt,writer));
+//    }
 
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable("scheduleId") Long id){
 //        return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
         return ResponseEntity.ok(scheduleService.findScheduleById(id));
     }
+
+    @PatchMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(
+            @PathVariable("scheduleId") Long id, @RequestBody ScheduleRequestDto dto){
+        return new ResponseEntity<>(scheduleService.updateSchedule(id, dto.getTodo(), dto.getWriter(), dto.getPassword()),HttpStatus.OK);
+    }
+
 }

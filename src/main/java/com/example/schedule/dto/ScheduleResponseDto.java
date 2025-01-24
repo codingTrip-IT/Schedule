@@ -16,10 +16,11 @@ public class ScheduleResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public ScheduleResponseDto(String todo, String writer, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.todo = todo;
-        this.writer = writer;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    public ScheduleResponseDto(Schedule schedule) {
+        this.id = schedule.getId();
+        this.todo = schedule.getTodo();
+        this.writer = schedule.getWriter();
+        this.createdAt = schedule.getCreatedAt();
+        this.updatedAt = schedule.getUpdatedAt();
     }
 }

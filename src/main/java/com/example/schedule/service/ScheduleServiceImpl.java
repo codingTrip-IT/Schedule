@@ -64,4 +64,14 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         return new ScheduleResponseDto(schedule);
     }
+
+    @Override
+    public void deleteSchedule(Long id, String password) {
+
+        int deletedRow = scheduleRepository.deleteSchedule(id, password);
+
+        if (deletedRow == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+        }
+    }
 }

@@ -14,12 +14,13 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
@@ -53,37 +54,56 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
         return new ScheduleResponseDto(key.longValue(),schedule.getTodo(),schedule.getWriter(),schedule.getCreatedAt(),schedule.getUpdatedAt());
     }
 
-//    @Override
-//    public List<ScheduleResponseDto> findAllSchedules(Schedule schedule) {
+    @Override
+    public List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, String writer) {
 
-//        String sql = "select * from schedule ";
-//
-//        if (schedule.getUpdatedAt() != null){
-//            sql += "where DATE(updatedAt)=? ";
-//            sql += "order by updatedAt desc";
-//            return jdbcTemplate.query(sql,scheduleRowMapper(),schedule.getUpdatedAt());
-//        }
-//
-//        if (schedule.getWriter() != null){
-//            sql += "writer=?";
-//            sql += "order by updatedAt desc";
-//            return jdbcTemplate.query(sql,scheduleRowMapper(),schedule.getWriter());
-//        }
+        String sql;
+        String strUpdateAt = updatedAt.toString();
 
-//        sql += "order by updatedAt desc";
+        if (updatedAt != null && writer == null){
+            sql = "select * from schedule where DATE(updatedAt)= ? order by updatedAt desc";
+            return jdbcTemplate.query(sql,scheduleRowMapper(),strUpdateAt);
+        }
 
+        if (updatedAt == null && writer != null){
+            sql = "select * from schedule  where  writer=? order by updatedAt desc";
+            return jdbcTemplate.query(sql,scheduleRowMapper(),writer);
+        }
 
+        if (updatedAt != null && writer != null){
+            sql = "select * from schedule where DATE(updatedAt)=? AND writer=? order by updatedAt desc";
+            return jdbcTemplate.query(sql,scheduleRowMapper(),strUpdateAt,writer);
+        }
 
-//        return jdbcTemplate.query(sql,scheduleRowMapper());
-//    }
+        sql = "select * from schedule order by updatedAt desc";
+
+        return jdbcTemplate.query(sql,scheduleRowMapper());
+    }
 
     @Override
     public Schedule findMemoByIdOrElseThrow(Long id) {
-        List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapper(), id);
+        List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapperV2(), id);
         return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id));
     }
 
-    private RowMapper<Schedule> scheduleRowMapper() {
+    private RowMapper<ScheduleResponseDto> scheduleRowMapper() {
+        return new RowMapper<ScheduleResponseDto>() {
+            @Override
+            public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                // 문자열을 LocalDateTime으로 변환
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                return new ScheduleResponseDto(
+                        rs.getLong("id"),
+                        rs.getString("todo"),
+                        rs.getString("writer"),
+                        LocalDateTime.parse(rs.getString("createdAt"), formatter),
+                        LocalDateTime.parse(rs.getString("updatedAt"), formatter)
+                );
+            }
+        };
+    }
+    private RowMapper<Schedule> scheduleRowMapperV2() {
         return new RowMapper<Schedule>() {
             @Override
             public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {

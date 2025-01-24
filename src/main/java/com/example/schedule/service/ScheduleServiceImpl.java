@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,13 +32,10 @@ public class ScheduleServiceImpl implements ScheduleService{
         return scheduleRepository.saveSchedule(schedule);
     }
 
-//    @Override
-//    public List<ScheduleResponseDto> findAllSchedules(LocalDateTime updatedAt, String writer) {
-//
-//        Schedule schedule = new Schedule(updatedAt, writer);
-//
-//        return scheduleRepository.findAllSchedules(schedule);
-//    }
+    @Override
+    public List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, String writer) {
+        return scheduleRepository.findAllSchedules(updatedAt, writer);
+    }
 
     @Override
     public ScheduleResponseDto findScheduleById(Long id) {

@@ -19,11 +19,6 @@ public class Schedule {
     @Setter
     private LocalDateTime updatedAt;
 
-    public Schedule(LocalDateTime updatedAt, String writer) {
-        this.updatedAt = updatedAt;
-        this.writer = writer;
-    }
-
     public Schedule(String todo, String writer, String password) {
         this.todo = todo;
         this.writer = writer;

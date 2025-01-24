@@ -2,6 +2,7 @@ package com.example.schedule.controller;
 
 import com.example.schedule.dto.ScheduleRequestDto;
 import com.example.schedule.dto.ScheduleResponseDto;
+import com.example.schedule.entity.Schedule;
 import com.example.schedule.service.ScheduleService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -33,16 +36,16 @@ public class ScheduleController {
 //        return ResponseEntity.ok(scheduleService.saveSchedule(dto));
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule(
-//            LocalDateTime updatedAt,
-//            String writer
-//    ) {
-//        log.info("updatedAt={}", updatedAt);
-//        log.info("writer={}", writer);
-//
-//        return ResponseEntity.ok(scheduleService.findAllSchedules(updatedAt,writer));
-//    }
+    @GetMapping
+    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule(
+            LocalDate updatedAt,
+            String writer
+    ) {
+        log.info("updatedAt={}", updatedAt);
+        log.info("writer={}", writer);
+
+        return ResponseEntity.ok(scheduleService.findAllSchedules(updatedAt,writer));
+    }
 
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable("scheduleId") Long id){
@@ -59,9 +62,7 @@ public class ScheduleController {
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> deleteSchedule(
             @PathVariable("scheduleId") Long id, @RequestBody ScheduleRequestDto dto){
-
         scheduleService.deleteSchedule(id, dto.getPassword());
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -12,9 +12,9 @@ public interface ScheduleService {
 
     List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, Long writerId);
 
-    ScheduleResponseDto findScheduleById(Long schedule_id);
+    ScheduleResponseDto findScheduleById(Long scheduleId);
 
-    ScheduleResponseDto updateSchedule(Long schedule_id, String todo, String password);
+    ScheduleResponseDto updateSchedule(Long scheduleId, String todo, String password);
 
-    void deleteSchedule(Long schedule_id, String password);
+    void deleteSchedule(Long scheduleId, String password);
 }

@@ -10,26 +10,29 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Schedule {
 
-    private Long id;
+    private Long scheduleId;
     private String todo;
-    private String writer;
+    private Long writerId;
+    private String name;
     private String password;
     @Setter
     private LocalDateTime createdAt;
     @Setter
     private LocalDateTime updatedAt;
 
-    public Schedule(String todo, String writer, String password) {
+    public Schedule(String todo, Long writerId, String password) {
         this.todo = todo;
-        this.writer = writer;
+        this.writerId = writerId;
         this.password = password;
     }
 
-    public Schedule(Long id, String todo, String writer, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public Schedule(Long scheduleId, String todo, Long writerId, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.scheduleId = scheduleId;
         this.todo = todo;
-        this.writer = writer;
+        this.writerId = writerId;
+        this.name = name;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
 }

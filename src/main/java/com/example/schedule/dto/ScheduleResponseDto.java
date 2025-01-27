@@ -10,16 +10,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ScheduleResponseDto {
 
-    private Long id;
+    private Long scheduleId;
     private String todo;
-    private String writer;
+    private Long writerId;
+    private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public ScheduleResponseDto(Schedule schedule) {
-        this.id = schedule.getId();
+        this.scheduleId = schedule.getScheduleId();
         this.todo = schedule.getTodo();
-        this.writer = schedule.getWriter();
+        this.writerId = schedule.getWriterId();
+        this.name = schedule.getName();
         this.createdAt = schedule.getCreatedAt();
         this.updatedAt = schedule.getUpdatedAt();
     }

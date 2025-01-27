@@ -12,11 +12,11 @@ public interface ScheduleRepository {
 
     ScheduleResponseDto saveSchedule(Schedule schedule);
 
-    List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, String writer);
+    List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, Long writerId);
 
-    Schedule findMemoByIdOrElseThrow(Long id);
+    Schedule findScheduleByIdOrElseThrow(Long schedule_id);
 
-    int updateSchedule(Long id, String todo, String writer, String password);
+    int updateSchedule(Long schedule_id, String todo, String password);
 
-    int deleteSchedule(Long id, String password);
+    int deleteSchedule(Long schedule_id, String password);
 }

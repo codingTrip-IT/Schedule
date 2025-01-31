@@ -1,6 +1,6 @@
-package com.example.schedule.dto;
+package com.example.schedule.presentation.dto;
 
-import com.example.schedule.entity.Writer;
+import com.example.schedule.domain.entity.Writer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

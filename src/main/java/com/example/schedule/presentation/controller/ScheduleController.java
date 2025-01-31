@@ -1,8 +1,8 @@
-package com.example.schedule.controller;
+package com.example.schedule.presentation.controller;
 
-import com.example.schedule.dto.ScheduleRequestDto;
-import com.example.schedule.dto.ScheduleResponseDto;
-import com.example.schedule.service.ScheduleService;
+import com.example.schedule.presentation.dto.ScheduleRequestDto;
+import com.example.schedule.presentation.dto.ScheduleResponseDto;
+import com.example.schedule.application.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +39,17 @@ public class ScheduleController{
         log.info("writerId={}", writerId);
 
         return ResponseEntity.ok(scheduleService.findAllSchedules(updatedAt,writerId));
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedulePaging(
+            int pageNo,
+            int pageSize
+    ) {
+        log.info("pageNo={}", pageNo);
+        log.info("pageSize={}", pageSize);
+
+        return ResponseEntity.ok(scheduleService.findAllSchedulePaging(pageNo,pageSize));
     }
 
     @GetMapping("/{scheduleId}")

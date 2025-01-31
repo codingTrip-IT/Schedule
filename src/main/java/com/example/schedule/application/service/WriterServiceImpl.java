@@ -1,9 +1,9 @@
-package com.example.schedule.service;
+package com.example.schedule.application.service;
 
-import com.example.schedule.dto.WriterRequestDto;
-import com.example.schedule.dto.WriterResponseDto;
-import com.example.schedule.entity.Writer;
-import com.example.schedule.repository.WriterRepository;
+import com.example.schedule.presentation.dto.WriterRequestDto;
+import com.example.schedule.presentation.dto.WriterResponseDto;
+import com.example.schedule.domain.entity.Writer;
+import com.example.schedule.domain.repository.WriterRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

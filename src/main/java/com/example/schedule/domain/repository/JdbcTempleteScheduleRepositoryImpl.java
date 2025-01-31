@@ -1,7 +1,7 @@
-package com.example.schedule.repository;
+package com.example.schedule.domain.repository;
 
-import com.example.schedule.dto.ScheduleResponseDto;
-import com.example.schedule.entity.Schedule;
+import com.example.schedule.presentation.dto.ScheduleResponseDto;
+import com.example.schedule.domain.entity.Schedule;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -95,6 +95,20 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
                 "ORDER BY s.updatedAt DESC";
 
         return jdbcTemplate.query(sql,scheduleRowMapper());
+    }
+
+    @Override
+    public List<ScheduleResponseDto> findAllSchedulePaging(int pageNo, int pageSize) {
+        String sql = "SELECT s.scheduleId, s.todo, w.writerId, w.name, s.createdAt, s.updatedAt\n" +
+                "FROM schedule s\n" +
+                "JOIN writer w\n" +
+                "ON s.writerId = w.writerId\n" +
+                "ORDER BY s.updatedAt DESC\n" +
+                "LIMIT ? OFFSET ?";
+
+        int offsetValue = (pageNo-1) * pageSize;
+
+        return jdbcTemplate.query(sql,scheduleRowMapper(),pageSize,offsetValue);
     }
 
     @Override

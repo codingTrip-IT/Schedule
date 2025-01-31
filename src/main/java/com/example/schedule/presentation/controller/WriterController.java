@@ -1,8 +1,8 @@
-package com.example.schedule.controller;
+package com.example.schedule.presentation.controller;
 
-import com.example.schedule.dto.WriterRequestDto;
-import com.example.schedule.dto.WriterResponseDto;
-import com.example.schedule.service.WriterService;
+import com.example.schedule.presentation.dto.WriterRequestDto;
+import com.example.schedule.presentation.dto.WriterResponseDto;
+import com.example.schedule.application.service.WriterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

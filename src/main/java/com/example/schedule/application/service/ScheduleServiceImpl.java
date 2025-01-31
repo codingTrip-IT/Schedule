@@ -1,9 +1,9 @@
-package com.example.schedule.service;
+package com.example.schedule.application.service;
 
-import com.example.schedule.dto.ScheduleRequestDto;
-import com.example.schedule.dto.ScheduleResponseDto;
-import com.example.schedule.entity.Schedule;
-import com.example.schedule.repository.ScheduleRepository;
+import com.example.schedule.presentation.dto.ScheduleRequestDto;
+import com.example.schedule.presentation.dto.ScheduleResponseDto;
+import com.example.schedule.domain.entity.Schedule;
+import com.example.schedule.domain.repository.ScheduleRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +33,11 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, Long writerId) {
         return scheduleRepository.findAllSchedules(updatedAt, writerId);
+    }
+
+    @Override
+    public List<ScheduleResponseDto> findAllSchedulePaging(int pageNo, int pageSize) {
+        return scheduleRepository.findAllSchedulePaging(pageNo, pageSize);
     }
 
     @Override

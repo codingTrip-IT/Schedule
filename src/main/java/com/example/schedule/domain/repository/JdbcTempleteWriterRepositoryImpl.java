@@ -1,7 +1,7 @@
-package com.example.schedule.repository;
+package com.example.schedule.domain.repository;
 
-import com.example.schedule.dto.WriterResponseDto;
-import com.example.schedule.entity.Writer;
+import com.example.schedule.presentation.dto.WriterResponseDto;
+import com.example.schedule.domain.entity.Writer;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

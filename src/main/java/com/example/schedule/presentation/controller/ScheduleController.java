@@ -4,6 +4,7 @@ import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.application.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +45,7 @@ public class ScheduleController{
     @GetMapping("/page")
     public ResponseEntity<List<ScheduleResponseDto>> findAllSchedulePaging(
             int pageNo,
-            int pageSize
-    ) {
+            int pageSize) {
         log.info("pageNo={}", pageNo);
         log.info("pageSize={}", pageSize);
 

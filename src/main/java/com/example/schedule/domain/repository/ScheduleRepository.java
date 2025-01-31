@@ -18,7 +18,8 @@ public interface ScheduleRepository {
 
     int updateSchedule(Long scheduleId, String todo, String password);
 
-    int deleteSchedule(Long scheduleId, String password);
+    String validatePassword(Long scheduleId);
 
+    int deleteSchedule(Long scheduleId, String password);
 
 }

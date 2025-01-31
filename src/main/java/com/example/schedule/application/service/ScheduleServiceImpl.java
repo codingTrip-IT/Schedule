@@ -10,7 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService{
@@ -54,6 +57,12 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         if (todo == null || password == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The todo, writer and password are required values.");
+        }
+
+        String dbPassword = scheduleRepository.validatePassword(scheduleId);
+
+        if (!dbPassword.equals(password)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is mismatched = " + password);
         }
 
         int updatedRow = scheduleRepository.updateSchedule(scheduleId, todo, password);

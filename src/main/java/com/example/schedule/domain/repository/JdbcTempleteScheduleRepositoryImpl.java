@@ -163,7 +163,12 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     public int updateSchedule(Long scheduleId, String todo, String password) {
         return jdbcTemplate.update("UPDATE schedule SET todo = ?,updatedAt = NOW()" +
-                "WHERE scheduleId = ? AND password = ?",todo, scheduleId, password);
+                    "WHERE scheduleId = ? AND password = ?",todo, scheduleId, password);
+    }
+
+    @Override
+    public String validatePassword(Long scheduleId) {
+        return jdbcTemplate.queryForObject("select password from schedule where scheduleId =?", String.class, scheduleId);
     }
 
     @Override

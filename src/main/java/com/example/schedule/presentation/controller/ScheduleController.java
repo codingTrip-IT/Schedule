@@ -46,7 +46,7 @@ public class ScheduleController{
     @GetMapping("/page")
     public ResponseEntity<List<ScheduleResponseDto>> findAllSchedulePaging(
             @RequestParam(value="pageNo", defaultValue="1") int pageNo,
-            @RequestParam(value="pageNo", defaultValue="10") int pageSize) {
+            @RequestParam(value="pageSize", defaultValue="10") int pageSize) {
         log.info("pageNo={}", pageNo);
         log.info("pageSize={}", pageSize);
 

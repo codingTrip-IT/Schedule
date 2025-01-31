@@ -6,6 +6,7 @@ import com.example.schedule.domain.entity.Writer;
 import com.example.schedule.domain.repository.WriterRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class WriterServiceImpl implements WriterService{
         this.writerRepository = writerRepository;
     }
 
+    @Transactional
     @Override
     public WriterResponseDto saveWriter(WriterRequestDto dto) {
         Writer writer = new Writer(dto.getName(), dto.getEmail());
@@ -38,6 +40,7 @@ public class WriterServiceImpl implements WriterService{
         return new WriterResponseDto(writer);
     }
 
+    @Transactional
     @Override
     public WriterResponseDto updateWriter(Long writerId, String name, String email) {
         if (name == null || email == null) {
@@ -55,6 +58,7 @@ public class WriterServiceImpl implements WriterService{
         return new WriterResponseDto(writer);
     }
 
+    @Transactional
     @Override
     public void deleteWriter(Long writerId) {
         int deletedRow = writerRepository.deleteWriter(writerId);

@@ -7,17 +7,13 @@ import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.domain.entity.Schedule;
 import com.example.schedule.domain.repository.ScheduleRepository;
-import com.mysql.cj.xdevapi.XDevAPIError;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService{
@@ -28,6 +24,7 @@ public class ScheduleServiceImpl implements ScheduleService{
         this.scheduleRepository = scheduleRepository;
     }
 
+    @Transactional
     @Override
     public ScheduleResponseDto saveSchedule(ScheduleRequestDto dto) {
 
@@ -81,8 +78,20 @@ public class ScheduleServiceImpl implements ScheduleService{
         return new ScheduleResponseDto(schedule);
     }
 
+    @Transactional
     @Override
     public void deleteSchedule(Long scheduleId, String password) {
+
+        if (password == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The password are required values.");
+        }
+
+        String dbPassword = scheduleRepository.validatePassword(scheduleId);
+
+        if (!dbPassword.equals(password)){
+            throw new ApplicationException(ErrorMessageCode.BAD_REQUEST,
+                    List.of(new ApiError("password", "비밀번호가 일치하지 않습니다.")));
+        }
 
         int deletedRow = scheduleRepository.deleteSchedule(scheduleId, password);
 

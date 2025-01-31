@@ -3,6 +3,7 @@ package com.example.schedule.presentation.controller;
 import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.application.service.ScheduleService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class ScheduleController{
     }
 
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto dto){
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@Valid @RequestBody ScheduleRequestDto dto){
 
         // ServiceLayer 호출 및 응답
         return new ResponseEntity<>(scheduleService.saveSchedule(dto), HttpStatus.CREATED);
@@ -44,8 +45,8 @@ public class ScheduleController{
 
     @GetMapping("/page")
     public ResponseEntity<List<ScheduleResponseDto>> findAllSchedulePaging(
-            int pageNo,
-            int pageSize) {
+            @RequestParam(value="pageNo", defaultValue="1") int pageNo,
+            @RequestParam(value="pageNo", defaultValue="10") int pageSize) {
         log.info("pageNo={}", pageNo);
         log.info("pageSize={}", pageSize);
 

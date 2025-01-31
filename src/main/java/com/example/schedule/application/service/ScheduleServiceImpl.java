@@ -1,9 +1,13 @@
 package com.example.schedule.application.service;
 
+import com.example.schedule.presentation.controller.ApiError;
+import com.example.schedule.presentation.controller.ApplicationException;
+import com.example.schedule.presentation.controller.ErrorMessageCode;
 import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.domain.entity.Schedule;
 import com.example.schedule.domain.repository.ScheduleRepository;
+import com.mysql.cj.xdevapi.XDevAPIError;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +66,8 @@ public class ScheduleServiceImpl implements ScheduleService{
         String dbPassword = scheduleRepository.validatePassword(scheduleId);
 
         if (!dbPassword.equals(password)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is mismatched = " + password);
+            throw new ApplicationException(ErrorMessageCode.BAD_REQUEST,
+                    List.of(new ApiError("password", "비밀번호가 일치하지 않습니다.")));
         }
 
         int updatedRow = scheduleRepository.updateSchedule(scheduleId, todo, password);

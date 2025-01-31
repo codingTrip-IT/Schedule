@@ -3,6 +3,7 @@ package com.example.schedule.presentation.controller;
 import com.example.schedule.presentation.dto.WriterRequestDto;
 import com.example.schedule.presentation.dto.WriterResponseDto;
 import com.example.schedule.application.service.WriterService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class WriterController {
     }
 
     @PostMapping
-    public ResponseEntity<WriterResponseDto> createWriter(@RequestBody WriterRequestDto dto){
+    public ResponseEntity<WriterResponseDto> createWriter(@Valid @RequestBody WriterRequestDto dto){
         return new ResponseEntity<>(writerService.saveWriter(dto), HttpStatus.CREATED);
     }
 

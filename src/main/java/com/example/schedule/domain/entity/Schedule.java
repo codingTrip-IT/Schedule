@@ -13,13 +13,13 @@ public class Schedule {
     private Long scheduleId;
     private String todo;
     private Long userId;
-    private String userName;
+    private String userName; //user 테이블 컬럼 매핑을 위해 추가
     private String password;
     @Setter
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; //Setter를 통해 now()값 주입
     @Setter
-    private LocalDateTime updatedAt;
-    private boolean deleted;
+    private LocalDateTime updatedAt; //Setter를 통해 now()값 주입
+    private boolean deleted; //삭제 여부
 
     public Schedule(String todo, Long userId, String password) {
         this.todo = todo;
@@ -34,14 +34,5 @@ public class Schedule {
         this.userName = userName;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public Schedule(Long scheduleId, String todo, Long userId, LocalDateTime createdAt, LocalDateTime updatedAt, boolean deleted) {
-        this.scheduleId = scheduleId;
-        this.todo = todo;
-        this.userId = userId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deleted = deleted;
     }
 }

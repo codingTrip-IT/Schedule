@@ -1,5 +1,10 @@
 package com.example.schedule.presentation.Exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum ErrorMessageCode {
     OK("2000", "ok", null),
     BAD_REQUEST("4000", "잘못된 요청입니다.", "ko"),
@@ -12,21 +17,4 @@ public enum ErrorMessageCode {
     private final String message;
     private final String languageCode;
 
-    ErrorMessageCode(String code, String message, String languageCode) {
-        this.code = code;
-        this.message = message;
-        this.languageCode = languageCode;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getLanguageCode() {
-        return languageCode;
-    }
 }

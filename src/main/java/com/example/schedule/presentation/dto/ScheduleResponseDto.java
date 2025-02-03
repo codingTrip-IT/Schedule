@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL) //json에서 null인 데이터 숨기기
 public class ScheduleResponseDto {
 
     private Long scheduleId;

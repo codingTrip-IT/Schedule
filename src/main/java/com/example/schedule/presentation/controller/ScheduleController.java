@@ -19,6 +19,7 @@ public class ScheduleController{
 
     private final ScheduleService scheduleService;
 
+    /* 생성자 주입 */
     public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
@@ -32,8 +33,8 @@ public class ScheduleController{
     /* 일정 전체 조회 */
     @GetMapping
     public ResponseEntity<List<ScheduleResponseDto>> getSchedules(
-            LocalDate updatedAt,
-            Long userId
+            LocalDate updatedAt,  //수정일
+            Long userId           //사용자 id
     ) {
         log.info("updatedAt={}", updatedAt);
         log.info("userId={}", userId);
@@ -44,8 +45,8 @@ public class ScheduleController{
     /* 일정 전체 조회 - 페이징 */
     @GetMapping("/paging")
     public ResponseEntity<List<ScheduleResponseDto>> getSchedulesPaging(
-            @RequestParam(value="pageNo", defaultValue="1") int pageNo,
-            @RequestParam(value="pageSize", defaultValue="5") int pageSize) {
+            @RequestParam(value="pageNo", defaultValue="1") int pageNo,         // pageNo:페이지 번호, 기본값 1
+            @RequestParam(value="pageSize", defaultValue="5") int pageSize) {   //pageSize:페이지 크기, 기본값 5
         log.info("pageNo={}", pageNo);
         log.info("pageSize={}", pageSize);
 

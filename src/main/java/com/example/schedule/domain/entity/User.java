@@ -14,10 +14,10 @@ public class User {
     private String userName;
     private String email;
     @Setter
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt;  //Setter를 통해 now()값 주입
     @Setter
-    private LocalDateTime updatedAt;
-    private boolean deleted;
+    private LocalDateTime updatedAt;  //Setter를 통해 now()값 주입
+    private boolean deleted; //삭제 여부
 
     public User(String userName, String email) {
         this.userName = userName;

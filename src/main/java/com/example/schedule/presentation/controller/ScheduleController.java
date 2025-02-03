@@ -1,15 +1,10 @@
 package com.example.schedule.presentation.controller;
 
-import com.example.schedule.domain.repository.JdbcTempleteScheduleRepositoryImpl;
-import com.example.schedule.presentation.Exception.ApiError;
-import com.example.schedule.presentation.Exception.ApplicationException;
-import com.example.schedule.presentation.Exception.ErrorMessageCode;
 import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.application.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +54,6 @@ public class ScheduleController implements TestControllerDocs{
 
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable("scheduleId") Long scheduleId){
-
         return ResponseEntity.ok(scheduleService.findScheduleById(scheduleId));
     }
 

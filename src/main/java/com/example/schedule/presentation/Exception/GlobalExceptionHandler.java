@@ -20,26 +20,14 @@ public class GlobalExceptionHandler {
         errorResponse.put("errors", ex.getErrors());
         errorResponse.put("timestamp", LocalDateTime.now());
 
-        HttpStatus status;
-        switch (ex.getErrorMessageCode()) {
-            case BAD_REQUEST:
-                status = HttpStatus.BAD_REQUEST;
-                break;
-            case UNAUTHORIZED:
-                status = HttpStatus.UNAUTHORIZED;
-                break;
-            case FORBIDDEN:
-                status = HttpStatus.FORBIDDEN;
-                break;
-            case NOT_FOUND:
-                status = HttpStatus.NOT_FOUND;
-                break;
-            case INTERNAL_SERVER_ERROR:
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-                break;
-            default:
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
+        HttpStatus status = switch (ex.getErrorMessageCode()) {
+            case BAD_REQUEST -> HttpStatus.BAD_REQUEST;
+            case UNAUTHORIZED -> HttpStatus.UNAUTHORIZED;
+            case FORBIDDEN -> HttpStatus.FORBIDDEN;
+            case NOT_FOUND -> HttpStatus.NOT_FOUND;
+            case INTERNAL_SERVER_ERROR -> HttpStatus.INTERNAL_SERVER_ERROR;
+            default -> HttpStatus.INTERNAL_SERVER_ERROR;
+        };
 
         return ResponseEntity.status(status).body(errorResponse);
     }

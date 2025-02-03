@@ -14,6 +14,8 @@ public interface ScheduleRepository {
 
     List<ScheduleResponseDto> findAllSchedulePaging(int pageNo, int pageSize);
 
+    Schedule findScheduleById(Long scheduleId);
+
     Schedule findScheduleByIdOrElseThrow(Long scheduleId);
 
     int updateSchedule(Long scheduleId, String todo, String password);
@@ -21,5 +23,7 @@ public interface ScheduleRepository {
     String validatePassword(Long scheduleId);
 
     int deleteSchedule(Long scheduleId, String password);
+
+    boolean validateDeleted(Long scheduleId);
 
 }

@@ -1,4 +1,4 @@
-package com.example.schedule.presentation.controller;
+package com.example.schedule.presentation.Exception;
 
 public enum ErrorMessageCode {
     OK("2000", "ok", null),

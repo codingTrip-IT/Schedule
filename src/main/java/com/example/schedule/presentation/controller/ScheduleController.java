@@ -1,5 +1,9 @@
 package com.example.schedule.presentation.controller;
 
+import com.example.schedule.domain.repository.JdbcTempleteScheduleRepositoryImpl;
+import com.example.schedule.presentation.Exception.ApiError;
+import com.example.schedule.presentation.Exception.ApplicationException;
+import com.example.schedule.presentation.Exception.ErrorMessageCode;
 import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.application.service.ScheduleService;
@@ -16,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/schedules")
-public class ScheduleController{
+public class ScheduleController implements TestControllerDocs{
 
     private final ScheduleService scheduleService;
 
@@ -55,7 +59,7 @@ public class ScheduleController{
 
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable("scheduleId") Long scheduleId){
-//        return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
+
         return ResponseEntity.ok(scheduleService.findScheduleById(scheduleId));
     }
 

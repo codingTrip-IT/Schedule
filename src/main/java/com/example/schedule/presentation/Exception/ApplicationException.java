@@ -1,4 +1,4 @@
-package com.example.schedule.presentation.controller;
+package com.example.schedule.presentation.Exception;
 
 import java.util.Collections;
 import java.util.List;

@@ -22,6 +22,7 @@ public class Schedule {
     private LocalDateTime createdAt;
     @Setter
     private LocalDateTime updatedAt;
+    private boolean deleted;
 
     public Schedule(String todo, Long writerId, String password) {
         this.todo = todo;
@@ -38,4 +39,12 @@ public class Schedule {
         this.updatedAt = updatedAt;
     }
 
+    public Schedule(Long scheduleId, String todo, Long writerId, LocalDateTime createdAt, LocalDateTime updatedAt, boolean deleted) {
+        this.scheduleId = scheduleId;
+        this.todo = todo;
+        this.writerId = writerId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deleted = deleted;
+    }
 }

@@ -1,12 +1,14 @@
 package com.example.schedule.application.service;
 
-import com.example.schedule.presentation.controller.ApiError;
-import com.example.schedule.presentation.controller.ApplicationException;
-import com.example.schedule.presentation.controller.ErrorMessageCode;
+import com.example.schedule.domain.repository.JdbcTempleteScheduleRepositoryImpl;
+import com.example.schedule.presentation.Exception.ApiError;
+import com.example.schedule.presentation.Exception.ApplicationException;
+import com.example.schedule.presentation.Exception.ErrorMessageCode;
 import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.domain.entity.Schedule;
 import com.example.schedule.domain.repository.ScheduleRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,11 +47,22 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public ScheduleResponseDto findScheduleById(Long id) {
+    public ScheduleResponseDto findScheduleById(Long scheduleId) {
 
-        Schedule schedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+            Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
+            if (schedule == null){
+                throw new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError("id", "잘못된 정보입니다. 다시 입력하세요")));
+            }
 
-        return new ScheduleResponseDto(schedule);
+            boolean deleted = scheduleRepository.validateDeleted(scheduleId);
+
+            if (deleted){
+                throw new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError("deleted", "이미 삭제된 정보입니다. 다시 입력하세요")));
+            }
+
+            return new ScheduleResponseDto(schedule);
     }
 
     @Transactional

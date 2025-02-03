@@ -62,7 +62,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
                     "FROM schedule s\n" +
                     "         JOIN writer w\n" +
                     "              ON s.writerId = w.writerId\n" +
-                    "WHERE DATE(s.updatedAt)= ?\n" +
+                    "WHERE DATE(s.updatedAt)= ? AND s.deleted = false\n" +
                     "ORDER BY s.updatedAt DESC";
 
             return jdbcTemplate.query(sql,scheduleRowMapper(),String.valueOf(updatedAt));
@@ -73,7 +73,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
                     "FROM schedule s\n" +
                     "         JOIN writer w\n" +
                     "              ON s.writerId = w.writerId\n" +
-                    "WHERE w.writerId = ?\n" +
+                    "WHERE w.writerId = ? AND s.deleted = false\n" +
                     "ORDER BY s.updatedAt DESC";
             return jdbcTemplate.query(sql,scheduleRowMapper(),writerId);
         }
@@ -83,7 +83,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
                     "FROM schedule s\n" +
                     "         JOIN writer w\n" +
                     "              ON s.writerId = w.writerId\n" +
-                    "WHERE DATE(s.updatedAt)= ? AND w.writerId = ?\n" +
+                    "WHERE DATE(s.updatedAt)= ? AND w.writerId = ?  AND s.deleted = false\n" +
                     "ORDER BY s.updatedAt DESC";
             return jdbcTemplate.query(sql,scheduleRowMapper(),String.valueOf(updatedAt),writerId);
         }
@@ -92,6 +92,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
                 "FROM schedule s \n" +
                 " JOIN writer w \n" +
                 "   ON s.writerId = w.writerId \n" +
+                "WHERE s.deleted = false \n"+
                 "ORDER BY s.updatedAt DESC";
 
         return jdbcTemplate.query(sql,scheduleRowMapper());
@@ -102,7 +103,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
         String sql = "SELECT s.scheduleId, s.todo, w.writerId, w.name, s.createdAt, s.updatedAt\n" +
                 "FROM schedule s\n" +
                 "JOIN writer w\n" +
-                "ON s.writerId = w.writerId\n" +
+                "ON s.writerId = w.writerId AND s.deleted = false \n" +
                 "ORDER BY s.updatedAt DESC\n" +
                 "LIMIT ? OFFSET ?";
 
@@ -112,12 +113,22 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
+    public Schedule findScheduleById(Long scheduleId) {
+        String sql = "SELECT *\n" +
+                "FROM schedule \n" +
+                "WHERE scheduleId = ?\n" +
+                "ORDER BY updatedAt DESC";
+        List<Schedule> result = jdbcTemplate.query(sql, scheduleRowMapperV3(), scheduleId);
+        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + scheduleId));
+    }
+
+    @Override
     public Schedule findScheduleByIdOrElseThrow(Long scheduleId) {
         String sql = "SELECT s.scheduleId, s.todo, w.writerId, w.name, s.createdAt, s.updatedAt\n" +
                 "FROM schedule s\n" +
                 "         JOIN writer w\n" +
                 "              ON s.writerId = w.writerId\n" +
-                "WHERE s.scheduleId = ?\n" +
+                "WHERE s.scheduleId = ? AND s.deleted = false\n" +
                 "ORDER BY s.updatedAt DESC";
         List<Schedule> result = jdbcTemplate.query(sql, scheduleRowMapperV2(), scheduleId);
         return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + scheduleId));
@@ -160,6 +171,25 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
         };
     }
 
+    private RowMapper<Schedule> scheduleRowMapperV3() {
+        return new RowMapper<Schedule>() {
+            @Override
+            public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
+                // 문자열을 LocalDateTime으로 변환
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                return new Schedule(
+                        rs.getLong("scheduleId"),
+                        rs.getString("todo"),
+                        rs.getLong("writerId"),
+                        LocalDateTime.parse(rs.getString("createdAt"),formatter),
+                        LocalDateTime.parse(rs.getString("updatedAt"),formatter),
+                        rs.getBoolean("deleted")
+                );
+            }
+        };
+    }
+
     @Override
     public int updateSchedule(Long scheduleId, String todo, String password) {
         return jdbcTemplate.update("UPDATE schedule SET todo = ?,updatedAt = NOW()" +
@@ -173,6 +203,13 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
 
     @Override
     public int deleteSchedule(Long scheduleId, String password) {
-        return jdbcTemplate.update("delete from schedule where scheduleId=? and password=?",scheduleId,password);
+//        return jdbcTemplate.update("delete from schedule where scheduleId=? and password=?",scheduleId,password);
+        return jdbcTemplate.update("UPDATE schedule SET deleted = true "+
+                "WHERE scheduleId = ? AND password = ?",scheduleId, password);
+    }
+
+    @Override
+    public boolean validateDeleted(Long scheduleId) {
+        return jdbcTemplate.queryForObject("select deleted from schedule where scheduleId =?", boolean.class, scheduleId);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.schedule.presentation.controller;
+package com.example.schedule.presentation.Exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

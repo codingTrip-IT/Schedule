@@ -14,8 +14,6 @@ public interface ScheduleRepository {
 
     List<ScheduleResponseDto> findAllSchedulePaging(int pageNo, int pageSize);
 
-//    Schedule findScheduleById(Long scheduleId);
-
     Schedule findScheduleByIdOrElseThrow(Long scheduleId);
 
     boolean validateDeleted(Long userId);

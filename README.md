@@ -1,7 +1,7 @@
 ## 👉🏼 일정관리(Schedule) 개인과제
 
 ### 🙋‍♀️ 일정관리(Schedule) 과제 설명
-- **일정관리(Schedule) 과제**는 **<u>Spring을 활용하여 일정 관리 앱을 구현</u>** 한 과제입니다.
+- **일정관리(Schedule) 과제**는 **<u>Spring을 활용하여 일정 관리 앱을 구현</u>**한 과제입니다.
 - **작성자 : 조예인**
 
 
@@ -25,24 +25,24 @@
 
 ## 👩🏻‍ API 명세
 ### 일정 API
- 기능           | Method | URL                     |Request| Response | 상태코드      
-|--------------|--------|-------------------------|---|----------|-----------|
-| 일정 생성        | POST   | /schedules              |요청 body| 등록 정보    | 201: 정상등록 |
-| 전체 일정 조회     | GET    | /schedules              |요청 param| 다건 응답 정보 | 200: 정상조회 |
-| 전체 일정 조회 페이징 | GET    | /schedules/page         |요청 param| 다건 응답 정보 | 200: 정상조회 |
-| 선택 일정 조회     | GET    | /schedules/{scheduleId} |요청 param| 단건 응답 정보 | 200: 정상조회 |
-| 선택 일정 수정     | PATCH  | /schedules/{scheduleId} |요청 body| 수정 정보    | 200: 정상수정 |
-| 선택 일정 삭제     | DELETE | /schedules/{scheduleId} |요청 param| -        | 200: 정상삭제 |
+ 기능           | Method | URL                     | Request  | Response | 상태코드      
+|--------------|--------|-------------------------|----------|----------|-----------|
+| 일정 생성        | POST   | /schedules              | 요청 body  | 등록 정보    | 201: 정상등록 |
+| 전체 일정 조회     | GET    | /schedules              | 요청 param | 다건 응답 정보 | 200: 정상조회 |
+| 전체 일정 조회 페이징 | GET    | /schedules/paging       | 요청 param | 다건 응답 정보 | 200: 정상조회 |
+| 선택 일정 조회     | GET    | /schedules/{scheduleId} | -        | 단건 응답 정보 | 200: 정상조회 |
+| 선택 일정 수정     | PATCH  | /schedules/{scheduleId} | 요청 body  | 수정 정보    | 200: 정상수정 |
+| 선택 일정 삭제     | DELETE | /schedules/{scheduleId} | 요청 body  | -        | 200: 정상삭제 |
 
 
 ### 사용자(작성자) API
- 기능        | Method | URL               |Request| Response | 상태코드      
-|-----------|--------|-------------------|---|----------|-----------|
-| 사용자 생성    | POST   | /users            |요청 body| 등록 정보    | 201: 정상등록 |
-| 전체 사용자 조회 | GET    | /users            |요청 param| 다건 응답 정보 | 200: 정상조회 |
-| 선택 사용자 조회 | GET    | /users/{userId}   |요청 param| 단건 응답 정보 | 200: 정상조회 |
-| 선택 사용자 수정 | PATCH    | /users/{userId} |요청 body| 수정 정보    | 200: 정상수정 |
-| 선택 사용자 삭제   | DELETE    | /users/{userId} |요청 param| -        | 200: 정상삭제 |
+ 기능        | Method | URL               | Request  | Response | 상태코드      
+|-----------|--------|-------------------|----------|----------|-----------|
+| 사용자 생성    | POST   | /users            | 요청 body  | 등록 정보    | 201: 정상등록 |
+| 전체 사용자 조회 | GET    | /users            | 요청 param | 다건 응답 정보 | 200: 정상조회 |
+| 선택 사용자 조회 | GET    | /users/{userId}   | -        | 단건 응답 정보 | 200: 정상조회 |
+| 선택 사용자 수정 | PATCH    | /users/{userId} | 요청 body  | 수정 정보    | 200: 정상수정 |
+| 선택 사용자 삭제   | DELETE    | /users/{userId} | -        | -        | 200: 정상삭제 |
 
 ## 👩 ERD
 <img width="642" alt="Image" src="https://github.com/user-attachments/assets/d73d8de9-918b-41b3-9905-32a0d0f67667" />
@@ -57,7 +57,7 @@ POST : localhost:8080/schedules
 요청 body :
 {
     "todo" : "jdbc공부3",
-    "userId" : "4",
+    "userId" : 4,
     "password" : "4444"
 }
         
@@ -82,7 +82,7 @@ updatedAt=2025-02-03
 [{
     "scheduleId": 17,
     "todo": "스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부1",
-    "userId": 17,
+    "userId": 2,
     "userName": "spring2",
     "createdAt": "2025-02-03T17:20:57",
     "updatedAt": "2025-02-03T17:20:57"
@@ -90,7 +90,7 @@ updatedAt=2025-02-03
 {
     "scheduleId": 16,
     "todo": "스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부",
-    "userId": 16,
+    "userId": 2,
     "userName": "spring2",
     "createdAt": "2025-02-03T17:20:53",
     "updatedAt": "2025-02-03T17:20:53"
@@ -106,7 +106,7 @@ GET : localhost:8080/schedules/4
 {
     "scheduleId": 4,
     "todo": "스프링공부하기",
-    "userId": 4,
+    "userId": 2,
     "userName": "spring2",
     "createdAt": "2025-02-03T16:19:37",
     "updatedAt": "2025-02-03T16:19:37"
@@ -130,7 +130,7 @@ PATCH : localhost:8080/schedules/4
 {
     "scheduleId": 4,
     "todo": "하루 1번 공부하기",
-    "userId": 4,
+    "userId": 2,
     "userName": "spring2",
     "createdAt": "2025-02-03T16:19:37",
     "updatedAt": "2025-02-03T18:39:56"
@@ -186,23 +186,23 @@ pageSize=3
 {
     "scheduleId": 15,
     "todo": "스프링공부하기9",
-    "userId": 15,
+    "userId": 2,
     "userName": "spring2",
     "createdAt": "2025-02-03T16:44:01",
     "updatedAt": "2025-02-03T16:44:01"
     },
     {
     "scheduleId": 14,
-    "todo": "스프링공부하기9",
-    "userId": 14,
+    "todo": "스프링공부하기8",
+    "userId": 2,
     "userName": "spring2",
     "createdAt": "2025-02-03T16:43:47",
     "updatedAt": "2025-02-03T16:43:47"
     },
     {
     "scheduleId": 13,
-    "todo": "스프링공부하기9",
-    "userId": 13,
+    "todo": "스프링공부하기7",
+    "userId": 2,
     "userName": "spring2",
     "createdAt": "2025-02-03T16:43:21",
     "updatedAt": "2025-02-03T16:43:21"
@@ -298,7 +298,7 @@ GET : localhost:8080/schedules
 요청 body :
 {
     "todo" : "스프링",
-    "userId" : "4",
+    "userId" : 4,
     "password" : ""
 }
 응답 body :
@@ -330,7 +330,7 @@ GET : localhost:8080/users
 ## 💥 한계점
 
 - swagger 활용하기
- : 활용해서 API 문서 작성해보고 싶습니다.
+ : 다음에는 swagger를 활용해서 API 문서를 작성해보고 싶습니다.
 
 
 ## 📚 STACKS

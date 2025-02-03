@@ -59,7 +59,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
         String sql;
 
         if (updatedAt != null && userId == null){
-            sql = "SELECT s.id, s.todo, u.id, u.username, s.created_at, s.updated_at\n" +
+            sql = "SELECT s.id, s.todo, s.user_id, u.username, s.created_at, s.updated_at\n" +
                     "FROM schedule s\n" +
                     "         JOIN user u\n" +
                     "              ON s.user_id = u.id\n" +
@@ -70,7 +70,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
         }
 
         if (updatedAt == null && userId != null){
-            sql = "SELECT s.id, s.todo, u.id, u.username, s.created_at, s.updated_at\n" +
+            sql = "SELECT s.id, s.todo, s.user_id, u.username, s.created_at, s.updated_at\n" +
                     "FROM schedule s\n" +
                     "         JOIN user u\n" +
                     "              ON s.user_id = u.id\n" +
@@ -80,7 +80,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
         }
 
         if (updatedAt != null && userId != null){
-            sql = "SELECT s.id, s.todo, u.id, u.username, s.created_at, s.updated_at\n" +
+            sql = "SELECT s.id, s.todo, s.user_id, u.username, s.created_at, s.updated_at\n" +
                     "FROM schedule s\n" +
                     "         JOIN user u\n" +
                     "              ON s.user_id = u.id\n" +
@@ -89,7 +89,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
             return jdbcTemplate.query(sql,scheduleRowMapper(),String.valueOf(updatedAt),userId);
         }
 
-        sql = "SELECT s.id, s.todo, u.id, u.username, s.created_at, s.updated_at\n" +
+        sql = "SELECT s.id, s.todo, s.user_id, u.username, s.created_at, s.updated_at\n" +
                 "FROM schedule s \n" +
                 " JOIN user u \n" +
                 "   ON s.user_id = u.id\n" +
@@ -101,10 +101,10 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
 
     @Override
     public List<ScheduleResponseDto> findAllSchedulePaging(int pageNo, int pageSize) {
-        String sql = "SELECT s.id, s.todo, w.id, w.username, s.created_at, s.updated_at\n" +
+        String sql = "SELECT s.id, s.todo, s.user_id, u.username, s.created_at, s.updated_at\n" +
                 "FROM schedule s\n" +
-                "JOIN user w\n" +
-                "ON s.user_id = w.id AND s.deleted = false \n" +
+                "JOIN user u\n" +
+                "ON s.user_id = u.id AND s.deleted = false \n" +
                 "ORDER BY s.updated_at DESC\n" +
                 "LIMIT ? OFFSET ?";
 
@@ -113,21 +113,9 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
         return jdbcTemplate.query(sql,scheduleRowMapper(),pageSize,offsetValue);
     }
 
-//    @Override
-//    public Schedule findScheduleById(Long scheduleId) {
-//        String sql = "SELECT *\n" +
-//                "FROM schedule s\n" +
-//                "         JOIN user u\n" +
-//                "              ON s.user_id = u.id\n" +
-//                "WHERE s.id = ? AND s.deleted = false\n"+
-//                "ORDER BY s.updated_at DESC";
-//        List<Schedule> result = jdbcTemplate.query(sql, scheduleRowMapperV3(), scheduleId);
-//        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + scheduleId));
-//    }
-
     @Override
     public Schedule findScheduleByIdOrElseThrow(Long scheduleId) {
-        String sql = "SELECT s.id, s.todo, u.id, u.username, s.created_at, s.updated_at\n" +
+        String sql = "SELECT s.id, s.todo, s.user_id, u.username, s.created_at, s.updated_at\n" +
                 "FROM schedule s\n" +
                 "         JOIN user u\n" +
                 "              ON s.user_id = u.id\n" +
@@ -152,7 +140,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
                 return new ScheduleResponseDto(
                         rs.getLong("id"),
                         rs.getString("todo"),
-                        rs.getLong("id"),
+                        rs.getLong("user_id"),
                         rs.getString("username"),
                         LocalDateTime.parse(rs.getString("created_at"), formatter),
                         LocalDateTime.parse(rs.getString("updated_at"), formatter)
@@ -170,7 +158,7 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
                 return new Schedule(
                         rs.getLong("id"),
                         rs.getString("todo"),
-                        rs.getLong("id"),
+                        rs.getLong("user_id"),
                         rs.getString("username"),
                         LocalDateTime.parse(rs.getString("created_at"),formatter),
                         LocalDateTime.parse(rs.getString("updated_at"),formatter)
@@ -179,24 +167,24 @@ public class JdbcTempleteScheduleRepositoryImpl implements ScheduleRepository {
         };
     }
 
-    private RowMapper<Schedule> scheduleRowMapperV3() {
-        return new RowMapper<Schedule>() {
-            @Override
-            public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
-                // 문자열을 LocalDateTime으로 변환
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-                return new Schedule(
-                        rs.getLong("id"),
-                        rs.getString("todo"),
-                        rs.getLong("id"),
-                        LocalDateTime.parse(rs.getString("created_at"),formatter),
-                        LocalDateTime.parse(rs.getString("updated_at"),formatter),
-                        rs.getBoolean("deleted")
-                );
-            }
-        };
-    }
+//    private RowMapper<Schedule> scheduleRowMapperV3() {
+//        return new RowMapper<Schedule>() {
+//            @Override
+//            public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                // 문자열을 LocalDateTime으로 변환
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//
+//                return new Schedule(
+//                        rs.getLong("id"),
+//                        rs.getString("todo"),
+//                        rs.getLong("user_id"),
+//                        LocalDateTime.parse(rs.getString("created_at"),formatter),
+//                        LocalDateTime.parse(rs.getString("updated_at"),formatter),
+//                        rs.getBoolean("deleted")
+//                );
+//            }
+//        };
+//    }
 
     @Override
     public int updateSchedule(Long scheduleId, String todo, String password) {

@@ -7,10 +7,10 @@ import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.domain.entity.Schedule;
 import com.example.schedule.domain.repository.ScheduleRepository;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,43 +26,51 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Transactional
     @Override
-    public ScheduleResponseDto saveSchedule(ScheduleRequestDto dto) {
-
-        // 요청받은 데이터로 schedule 객체 생성 ID 없음
-        Schedule schedule = new Schedule(dto.getTodo(), dto.getWriterId(), dto.getPassword());
-
+    public ScheduleResponseDto createSchedule(ScheduleRequestDto dto) {
+        Schedule schedule = new Schedule(dto.getTodo(), dto.getUserId(), dto.getPassword());
         return scheduleRepository.saveSchedule(schedule);
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, Long writerId) {
-        return scheduleRepository.findAllSchedules(updatedAt, writerId);
+    public List<ScheduleResponseDto> getSchedules(LocalDate updatedAt, Long userId) {
+        return scheduleRepository.findAllSchedules(updatedAt, userId);
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedulePaging(int pageNo, int pageSize) {
+    public List<ScheduleResponseDto> getSchedulesPaging(int pageNo, int pageSize) {
         return scheduleRepository.findAllSchedulePaging(pageNo, pageSize);
     }
 
     @Override
-    public ScheduleResponseDto findScheduleById(Long scheduleId) {
+    public ScheduleResponseDto getSchedule(Long scheduleId) {
 
-        Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
+        try{
+            boolean deleted = scheduleRepository.validateDeleted(scheduleId);
 
-        if (schedule.isDeleted()){
+            if (deleted){
+                throw new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError("deleted", "이미 삭제된 정보입니다. 다시 입력하세요")));
+            }
+
+            Schedule schedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
+
+            return new ScheduleResponseDto(schedule);
+        } catch (EmptyResultDataAccessException e) {
             throw new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                    List.of(new ApiError("deleted", "이미 삭제된 정보입니다. 다시 입력하세요")));
+                    List.of(new ApiError("id", "잘못된 정보입니다. 다시 입력하세요")));
         }
-
-        return new ScheduleResponseDto(schedule);
     }
 
     @Transactional
     @Override
     public ScheduleResponseDto updateSchedule(Long scheduleId, String todo, String password) {
 
-        if (todo == null || password == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The todo, writer and password are required values.");
+        System.out.println(todo);
+        System.out.println(password);
+
+        if (!StringUtils.hasText(todo) || !StringUtils.hasText(password)) {
+            throw new ApplicationException(ErrorMessageCode.BAD_REQUEST,
+                    List.of(new ApiError("required values", "할 일과 비밀번호는 필수값입니다.")));
         }
 
         String dbPassword = scheduleRepository.validatePassword(scheduleId);
@@ -75,7 +83,8 @@ public class ScheduleServiceImpl implements ScheduleService{
         int updatedRow = scheduleRepository.updateSchedule(scheduleId, todo, password);
 
         if (updatedRow == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + scheduleId);
+            throw new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                    List.of(new ApiError("id", "입력한 id가 존재하지 않습니다."+scheduleId)));
         }
 
         Schedule schedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
@@ -87,8 +96,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public void deleteSchedule(Long scheduleId, String password) {
 
-        if (password == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The password are required values.");
+        if (password.isEmpty()) {
+            throw new ApplicationException(ErrorMessageCode.BAD_REQUEST,
+                    List.of(new ApiError("required values", "비밀번호는 필수값입니다.")));
         }
 
         String dbPassword = scheduleRepository.validatePassword(scheduleId);
@@ -101,7 +111,8 @@ public class ScheduleServiceImpl implements ScheduleService{
         int deletedRow = scheduleRepository.deleteSchedule(scheduleId, password);
 
         if (deletedRow == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + scheduleId);
+            throw new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                    List.of(new ApiError("id", "입력한 id가 존재하지 않습니다."+scheduleId)));
         }
     }
 }

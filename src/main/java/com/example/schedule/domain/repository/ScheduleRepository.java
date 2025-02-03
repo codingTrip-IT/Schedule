@@ -14,16 +14,16 @@ public interface ScheduleRepository {
 
     List<ScheduleResponseDto> findAllSchedulePaging(int pageNo, int pageSize);
 
-    Schedule findScheduleById(Long scheduleId);
+//    Schedule findScheduleById(Long scheduleId);
 
     Schedule findScheduleByIdOrElseThrow(Long scheduleId);
+
+    boolean validateDeleted(Long userId);
 
     int updateSchedule(Long scheduleId, String todo, String password);
 
     String validatePassword(Long scheduleId);
 
     int deleteSchedule(Long scheduleId, String password);
-
-    boolean validateDeleted(Long scheduleId);
 
 }

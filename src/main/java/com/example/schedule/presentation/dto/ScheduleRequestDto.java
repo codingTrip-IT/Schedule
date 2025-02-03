@@ -9,9 +9,9 @@ public class ScheduleRequestDto {
 
     @Size(max = 200)
     @NotEmpty
-    private String todo;
-    private Long writerId;
+    private String todo; //할일은 최대 200자 이내로 제한, 필수값 처리
+    private Long userId;
     @NotEmpty
-    private String password;
+    private String password; //비밀번호는 필수값 처리
 
 }

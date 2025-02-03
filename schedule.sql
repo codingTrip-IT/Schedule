@@ -1,41 +1,29 @@
 use schedule;
 
+# 일정 테이블 삭제
+DROP TABLE schedule;
+# 일정 테이블 생성
 CREATE TABLE schedule
 (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '일정 식별자',
-    todo VARCHAR(100) NOT NULL COMMENT '할 일',
-    writer VARCHAR(100) NOT NULL COMMENT '작성자명',
+    user_id BIGINT COMMENT '작성자 식별자'
+        REFERENCES user(id) ON UPDATE CASCADE,
+    todo VARCHAR(300) NOT NULL COMMENT '할 일',
     password VARCHAR(100) NOT NULL COMMENT '비밀번호',
-    createdAt DATETIME COMMENT '생성일',
-    updatedAt DATETIME COMMENT '수정일'
-
-);
-
-# writer 테이블 추가
-# deleted 컬럼 추가
-USE schedule;
-DROP TABLE schedule;
-CREATE TABLE schedule
-(
-    schedule_id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '일정 식별자',
-    todo VARCHAR(100) NOT NULL COMMENT '할 일',
-    writer_id BIGINT COMMENT '작성자 식별자'
-        REFERENCES writer(writer_id) ON UPDATE CASCADE,
-    password VARCHAR(100) NOT NULL COMMENT '비밀번호',
-    createdAt DATETIME COMMENT '생성일',
-    updatedAt DATETIME COMMENT '수정일',
+    created_at DATETIME COMMENT '생성일',
+    updated_at DATETIME COMMENT '수정일',
     deleted BOOLEAN DEFAULT FALSE COMMENT '논리적 삭제여부'
-
 );
 
-DROP TABLE writer;
-CREATE TABLE writer
+# 사용자(작성자) 테이블 삭제
+DROP TABLE user;
+# 사용자(작성자) 테이블 생성
+CREATE TABLE user
 (
-    writer_id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '작성자 식별자',
-    name VARCHAR(100) NOT NULL COMMENT '작성자명',
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '작성자 식별자',
+    username VARCHAR(100) NOT NULL COMMENT '작성자명',
     email  VARCHAR(100) NOT NULL COMMENT '이메일',
-    createdAt DATETIME COMMENT '생성일',
-    updatedAt DATETIME COMMENT '수정일',
+    created_at DATETIME COMMENT '생성일',
+    updated_at DATETIME COMMENT '수정일',
     deleted BOOLEAN DEFAULT FALSE COMMENT '논리적 삭제여부'
-
 );

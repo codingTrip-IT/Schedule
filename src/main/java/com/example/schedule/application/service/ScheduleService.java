@@ -8,17 +8,16 @@ import java.util.List;
 
 public interface ScheduleService {
 
-    ScheduleResponseDto saveSchedule(ScheduleRequestDto dto);
+    ScheduleResponseDto createSchedule(ScheduleRequestDto dto);
 
-    List<ScheduleResponseDto> findAllSchedules(LocalDate updatedAt, Long writerId);
+    List<ScheduleResponseDto> getSchedules(LocalDate updatedAt, Long writerId);
 
-    List<ScheduleResponseDto> findAllSchedulePaging(int pageNo, int pageSize);
+    List<ScheduleResponseDto> getSchedulesPaging(int pageNo, int pageSize);
 
-    ScheduleResponseDto findScheduleById(Long scheduleId);
+    ScheduleResponseDto getSchedule(Long scheduleId);
 
     ScheduleResponseDto updateSchedule(Long scheduleId, String todo, String password);
 
     void deleteSchedule(Long scheduleId, String password);
-
 
 }

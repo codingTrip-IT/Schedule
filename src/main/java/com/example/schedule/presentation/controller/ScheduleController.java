@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/schedules")
-public class ScheduleController implements TestControllerDocs{
+public class ScheduleController{
 
     private final ScheduleService scheduleService;
 
@@ -23,46 +23,49 @@ public class ScheduleController implements TestControllerDocs{
         this.scheduleService = scheduleService;
     }
 
+    /* 일정 생성 */
     @PostMapping
     public ResponseEntity<ScheduleResponseDto> createSchedule(@Valid @RequestBody ScheduleRequestDto dto){
-
-        // ServiceLayer 호출 및 응답
-        return new ResponseEntity<>(scheduleService.saveSchedule(dto), HttpStatus.CREATED);
-//        return ResponseEntity.ok(scheduleService.saveSchedule(dto));
+        return new ResponseEntity<>(scheduleService.createSchedule(dto), HttpStatus.CREATED);
     }
 
+    /* 일정 전체 조회 */
     @GetMapping
-    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule(
+    public ResponseEntity<List<ScheduleResponseDto>> getSchedules(
             LocalDate updatedAt,
-            Long writerId
+            Long userId
     ) {
         log.info("updatedAt={}", updatedAt);
-        log.info("writerId={}", writerId);
+        log.info("userId={}", userId);
 
-        return ResponseEntity.ok(scheduleService.findAllSchedules(updatedAt,writerId));
+        return ResponseEntity.ok(scheduleService.getSchedules(updatedAt,userId));
     }
 
-    @GetMapping("/page")
-    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedulePaging(
+    /* 일정 전체 조회 - 페이징 */
+    @GetMapping("/paging")
+    public ResponseEntity<List<ScheduleResponseDto>> getSchedulesPaging(
             @RequestParam(value="pageNo", defaultValue="1") int pageNo,
-            @RequestParam(value="pageSize", defaultValue="10") int pageSize) {
+            @RequestParam(value="pageSize", defaultValue="5") int pageSize) {
         log.info("pageNo={}", pageNo);
         log.info("pageSize={}", pageSize);
 
-        return ResponseEntity.ok(scheduleService.findAllSchedulePaging(pageNo,pageSize));
+        return ResponseEntity.ok(scheduleService.getSchedulesPaging(pageNo,pageSize));
     }
 
+    /* 일정 선택 조회 */
     @GetMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable("scheduleId") Long scheduleId){
-        return ResponseEntity.ok(scheduleService.findScheduleById(scheduleId));
+    public ResponseEntity<ScheduleResponseDto> getSchedule(@PathVariable("scheduleId") Long scheduleId){
+        return ResponseEntity.ok(scheduleService.getSchedule(scheduleId));
     }
 
+    /* 일정 선택 수정 */
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
             @PathVariable("scheduleId") Long scheduleId, @RequestBody ScheduleRequestDto dto){
         return new ResponseEntity<>(scheduleService.updateSchedule(scheduleId, dto.getTodo(), dto.getPassword()),HttpStatus.OK);
     }
 
+    /* 일정 선택 삭제 */
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> deleteSchedule(
             @PathVariable("scheduleId") Long scheduleId, @RequestBody ScheduleRequestDto dto){

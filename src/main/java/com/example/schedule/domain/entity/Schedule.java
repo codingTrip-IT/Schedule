@@ -1,8 +1,5 @@
 package com.example.schedule.domain.entity;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +12,8 @@ public class Schedule {
 
     private Long scheduleId;
     private String todo;
-    private Long writerId;
-    private String name;
+    private Long userId;
+    private String userName;
     private String password;
     @Setter
     private LocalDateTime createdAt;
@@ -24,25 +21,25 @@ public class Schedule {
     private LocalDateTime updatedAt;
     private boolean deleted;
 
-    public Schedule(String todo, Long writerId, String password) {
+    public Schedule(String todo, Long userId, String password) {
         this.todo = todo;
-        this.writerId = writerId;
+        this.userId = userId;
         this.password = password;
     }
 
-    public Schedule(Long scheduleId, String todo, Long writerId, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Schedule(Long scheduleId, String todo, Long userId, String userName, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.scheduleId = scheduleId;
         this.todo = todo;
-        this.writerId = writerId;
-        this.name = name;
+        this.userId = userId;
+        this.userName = userName;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Schedule(Long scheduleId, String todo, Long writerId, LocalDateTime createdAt, LocalDateTime updatedAt, boolean deleted) {
+    public Schedule(Long scheduleId, String todo, Long userId, LocalDateTime createdAt, LocalDateTime updatedAt, boolean deleted) {
         this.scheduleId = scheduleId;
         this.todo = todo;
-        this.writerId = writerId;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deleted = deleted;

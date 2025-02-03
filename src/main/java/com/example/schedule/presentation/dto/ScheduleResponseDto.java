@@ -12,17 +12,18 @@ public class ScheduleResponseDto {
 
     private Long scheduleId;
     private String todo;
-    private Long writerId;
-    private String name;
+    private Long userId;
+    private String userName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public ScheduleResponseDto(Schedule schedule) {
         this.scheduleId = schedule.getScheduleId();
         this.todo = schedule.getTodo();
-        this.writerId = schedule.getWriterId();
-        this.name = schedule.getName();
+        this.userId = schedule.getUserId();
+        this.userName = schedule.getUserName();
         this.createdAt = schedule.getCreatedAt();
         this.updatedAt = schedule.getUpdatedAt();
     }
+
 }

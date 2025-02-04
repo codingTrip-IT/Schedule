@@ -1,8 +1,8 @@
 package com.example.schedule.application.service;
 
-import com.example.schedule.presentation.Exception.ApiError;
-import com.example.schedule.presentation.Exception.ApplicationException;
-import com.example.schedule.presentation.Exception.ErrorMessageCode;
+import com.example.schedule.exception.ApiError;
+import com.example.schedule.exception.ApplicationException;
+import com.example.schedule.exception.ErrorMessageCode;
 import com.example.schedule.presentation.dto.ScheduleRequestDto;
 import com.example.schedule.presentation.dto.ScheduleResponseDto;
 import com.example.schedule.domain.entity.Schedule;

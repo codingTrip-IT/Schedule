@@ -1,4 +1,4 @@
-package com.example.schedule.presentation.Exception;
+package com.example.schedule.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

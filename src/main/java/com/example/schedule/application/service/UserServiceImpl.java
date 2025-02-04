@@ -1,17 +1,15 @@
 package com.example.schedule.application.service;
 
-import com.example.schedule.presentation.Exception.ApiError;
-import com.example.schedule.presentation.Exception.ApplicationException;
-import com.example.schedule.presentation.Exception.ErrorMessageCode;
+import com.example.schedule.exception.ApiError;
+import com.example.schedule.exception.ApplicationException;
+import com.example.schedule.exception.ErrorMessageCode;
 import com.example.schedule.presentation.dto.UserRequestDto;
 import com.example.schedule.presentation.dto.UserResponseDto;
 import com.example.schedule.domain.entity.User;
 import com.example.schedule.domain.repository.UserRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
